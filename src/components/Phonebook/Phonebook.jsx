@@ -15,15 +15,17 @@ class Phonebook extends Component {
     filter: "",
   };
 
-  componentDidMount() {
-    const localContacts = localStorage.getItem('contacts')
-    const parseContacts = JSON.parse(localContacts)
-    this.setState({ contacts: parseContacts })
+   componentDidMount() {
+    const contacts = localStorage.getItem('contacts');
+    const parseContacts = JSON.parse(contacts);
+    if (parseContacts) {
+      this.setState({ contacts: parseContacts });
+    }
   }
-  
+
   componentDidUpdate(prevProps, prevState) {
-    if (prevState.contacts !== this.state.contacts) {
-      localStorage.setItem('contacts',JSON.stringify(this.state.contacts))
+    if (this.state.contacts !== prevState.contacts) {
+      localStorage.setItem('contacts', JSON.stringify(this.state.contacts));
     }
   }
 
@@ -40,7 +42,7 @@ class Phonebook extends Component {
     const { contacts, filter } = this.state;
     const getFilter = filter.toLocaleLowerCase();
     return contacts.filter((contact) =>
-      contact.name.toLocaleLowerCase().includes(getFilter)
+      contact.name.toLocaleLowerCase().includes(getFilter),
     );
   };
 
